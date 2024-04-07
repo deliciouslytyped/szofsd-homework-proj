@@ -43,5 +43,6 @@ public class GameApplication extends Application {
       ScenicView.show(stage.getScene());
     }
 
+
   }
 }

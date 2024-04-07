@@ -71,7 +71,7 @@ public class Scene3D {
   }
 
   //TODO factor and bind this to the model
-  public static MapSet prepareMap(int[] map){
+  public static MapSet prepareMap(int[][] map){
     Group world2 = new Group();
     Group world = new Group();
     world2.getChildren().add(world);

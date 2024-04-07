@@ -48,6 +48,7 @@ public abstract class StageController {
         log.trace("New scene initialized.");
 
         // Make a quit key availible in every scene
+        //TODO will this trigger on edit fields?
         newScene.setOnKeyPressed(k -> {
           log.trace("key pressed: {}", k);
           switch (k.getCode()) {

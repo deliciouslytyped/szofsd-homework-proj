@@ -30,11 +30,13 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import org.w3c.dom.Text;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.ArrayList;
 
 // TODO this is currently tightly coupled
+@Slf4j
 public class GridAnimator implements IGridAnimator {
     TexturedCube n;
     Group parent;
@@ -78,6 +80,7 @@ public class GridAnimator implements IGridAnimator {
     }
     @Override
     public void animateUp() {
+      log.trace("animateUp");
       var p = n.parentToLocal(0, 50, 50);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.X_AXIS);
       tryAnim(r, true, () -> {
@@ -97,6 +100,7 @@ public class GridAnimator implements IGridAnimator {
 
     @Override
     public void animateDown() {
+      log.trace("animateDown");
       var p = n.parentToLocal(0, 50, -50);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.X_AXIS);
       tryAnim(r, false, () ->{
@@ -117,6 +121,7 @@ public class GridAnimator implements IGridAnimator {
 
     @Override
     public void animateLeft() {
+      log.trace("animateLeft");
       var p = n.parentToLocal(-50, 50, 0);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.Z_AXIS);
       tryAnim(r, true, () -> {
@@ -137,6 +142,7 @@ public class GridAnimator implements IGridAnimator {
 
     @Override
     public void animateRight() {
+      log.trace("animateRight");
       var p = n.parentToLocal(50, 50, 0);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.Z_AXIS);
       tryAnim(r, false, () -> {
