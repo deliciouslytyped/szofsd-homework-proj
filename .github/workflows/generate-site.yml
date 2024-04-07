@@ -66,7 +66,7 @@ jobs:
           # So we have to be satisfied with spamming continuous releases..
           mv ../repo/java20/kyuubey-*.jar /tmp/kyuubey-java20.jar
           mv ../repo/java17/kyuubey-*.jar /tmp/kyuubey-java17.jar
-          url=$(GITHUB_TOKEN=${{ secrets.PAGES_PUSH_TOKEN }} hub release create -m "Automatic release." $(printf ' -a %s ' -- /tmp/kyuubey-*.jar) "contdeliv-$(date +%F-%H-%M-%S)" | grep http)
+          url=$(GITHUB_TOKEN=${{ secrets.PAGES_PUSH_TOKEN }} hub release create -m "Automatic release." $(printf ' -a %s ' /tmp/kyuubey-*.jar) "contdeliv-$(date +%F-%H-%M-%S)" | grep http)
           # TODO yeah yeah better normal static site generator
           sed -i "s|__latest_20_jar_url__|$url/kyuubey-java20.jar|" index.html
           sed -i "s|__latest_17_jar_url__|$url/kyuubey-java17.jar|" index.html
