@@ -3,9 +3,6 @@
 #### TOC
 TODO
 
-# TODO
-- TODO mopar said everyone switched to logback instead of log4j? https://logback.qos.ch/reasonsToSwitch.html
-
 # Original Description
 2.44. Feladat
 Egy 7 × 7 mezőből álló táblán a 46. ábrán látható módon van elhelyezve tíz
@@ -65,6 +62,7 @@ These must be configured as the following secrets:
 - [x] logging 
   - [x] to log file AND console
   - [ ] log sensible information and events at sensible levels
+  - TODO mopar said everyone switched to logback instead of log4j? https://logback.qos.ch/reasonsToSwitch.html
 
 - [ ] AI solver
 
