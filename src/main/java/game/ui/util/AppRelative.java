@@ -1,3 +1,5 @@
+// NOTE/TODO this ends up tightly coupled to main because of the entrypointLocation invocation.
+
 //TODO the following is not really valid anymore.
 // I now do similar to https://github.com/wangdapang77/Java8-Source-Code/blob/master/src/main/jdk8/java/net/JarURLConnection.java
 // and https://stackoverflow.com/questions/402683/how-do-i-get-just-the-jar-url-from-a-jar-url-containing-a-and-a-specific-fi/9189036#9189036
@@ -19,22 +21,12 @@ import java.nio.file.Path;
 // This class is final because: see the noted trick in entrypointLocation()
 @Slf4j
 public final class AppRelative {
-  // Partially based off of https://www.baeldung.com/java-full-path-of-jar-from-class
-  // TODO the supressed URISyntaxException should be impossible?
-  @SneakyThrows
-  public static URI entrypointLocation() {
-    // Trick from https://stackoverflow.com/questions/8275499/how-to-call-getclass-from-a-static-method-in-java/17397548#17397548
-    Class clazz = new Object() { }.getClass().getEnclosingClass();
-    var logDir = clazz.getResource(clazz.getSimpleName() + ".class").toURI();
-    return logDir;
-  }
-
   @SneakyThrows
   public static Path logDir() {
     // TODO this is not exactly reliable, there are a lot of variations
     // where this might not make sense, but as it is, it works for us.
     // NOTE this uses the path of the class or the JAR depending on what is being run.
-    var path = entrypointLocation();
+    var path = Main.entrypointLocation();
     // TODO Technically entrypointLocation can be anywhere,
     // but we assume it's a local path we can write to, so assert that?
     // TODO NOTE JDK has two kinds of filesystems per the following, so this should be exhaustive.

@@ -1,8 +1,6 @@
 package game.ui;
 
 import javafx.application.Application;
-import javafx.application.ConditionalFeature;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.NonNull;
@@ -12,6 +10,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 import game.ui.SceneStateMachine;
+
+import org.scenicview.ScenicView;
+
+import game.Settings;
 
 @Slf4j
 public class GameApplication extends Application {
@@ -23,23 +25,23 @@ public class GameApplication extends Application {
   // TODO: Any specific reason for marking the stage argument final in examples?
   @Override
   public void start(@NonNull Stage stage) throws IOException {
-    // Source: https://jenkov.com/tutorials/javafx/3d.html
-    boolean is3DSupported = Platform.isSupported(ConditionalFeature.SCENE3D);
-    if(!is3DSupported) {
-      // TODO test this
-      log.error("""
-        Sorry, 3D is not supported in JavaFX on this platform.
-        You can try checking the developer documentation for information on how to
-        attempt to forcefully enable the GPU backend with the `prism.forceGPU` property.
-        """);
+    if(!Util3D.check3DSupport()){
       return;
-      }
+    }
 
     ssm = new SceneStateMachine(stage);
+    // TODO This is basically a global variable for stages,
+    // but we have to do some hacks in StageController to get at it, so that needs to be refactored.
     stage.setUserData(UIState.builder()
             .ssm(ssm)
             .build());
 
     ssm.startScreen();
+
+    if (System.getProperty(Settings.DebugFXSetting) != null){
+      stage.setAlwaysOnTop(true);
+      ScenicView.show(stage.getScene());
+    }
+
   }
 }

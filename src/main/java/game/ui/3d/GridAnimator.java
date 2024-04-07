@@ -1,6 +1,6 @@
 package game.ui;
 
-//TODO clean
+//TODO clean this up, it breaks encapsulation of the scene grap on player and other things probably
 
 import com.sun.prism.Texture;
 import javafx.animation.*;

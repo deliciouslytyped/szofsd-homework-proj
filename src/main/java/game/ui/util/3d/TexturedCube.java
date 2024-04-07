@@ -38,9 +38,9 @@ public class TexturedCube extends MeshView {
     Canvas canvas = new Canvas(4*32,3*32); // the interpolation leads to soft edges. not sure how to turn it off.
     var gc = canvas.getGraphicsContext2D();
     //gc.setImageSmoothing(false); // probably doesnt apply / doesnt do what i want
-    gc.setFill(Color.YELLOW);
+    gc.setFill(Color.BLUE);
     gc.fillRect(0,0,16*32,12*32);
-    gc.setFill(Color.GREEN);
+    gc.setFill(Color.RED);
     switch (side){
       case 1 -> { gc.fillRect(1*32,0*32,1*32,1*32); } // "top"
       case 6 -> { gc.fillRect(1*32,1*32,1*32,1*32); } // "front"

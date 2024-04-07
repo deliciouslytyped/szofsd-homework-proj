@@ -66,6 +66,7 @@ public class Scene3D {
     light.setTranslateZ(-4000);
     root.getChildren().add(light);
 
+    scene.setRoot(root); //TODO think through what needs to be done with this where, I forgot about it and then thins got a bit messed up
     return new SceneSet(camera, root);
   }
 

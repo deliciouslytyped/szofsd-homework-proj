@@ -63,6 +63,11 @@
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.raumzeitfalle.fx</groupId>
+            <artifactId>scenic-view</artifactId>
+            <version>11.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
@@ -109,6 +114,7 @@
                     <options>
                       <!-- See the developer documentation -->
                       <option>-Dprism.forceGPU=true</option>
+                      <option>-Dapp.debugFX=1</option>
                     </options>
                 </configuration>
             </plugin>
