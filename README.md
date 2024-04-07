@@ -29,8 +29,8 @@ Development happens on the 1_develop branch (currently this is like what master 
 Pushes to 1_develop are automatically merged to 2_staging via a GitHub action.
 Pushes to 2_staging (via the above mentioned action) trigger a `mvn test` and `mvn package` action.
 (Due to rushing with the actions, the packaging is currently redundant with the next action, but also serves for testing.)
-Pushed to 2_staging trigger an action which generates the javadoc, other website components, and screenshots of the game.
-These are then deployed to github pages via a separate repo located at [https://github.com/deliciouslytyped/szof-pg](https://github.com/deliciouslytyped/szof-pg).
+Pushes to 2_staging trigger an action which generates the javadoc, other website components, and screenshots of the game.
+These are then deployed to GitHub pages via a separate repo located at [https://github.com/deliciouslytyped/szof-pg](https://github.com/deliciouslytyped/szof-pg).
 The website can be accessed at [https://deliciouslytyped.github.io/szof-pg/](https://deliciouslytyped.github.io/szof-pg/).
 
 The access to the pages repo and the branch merges are handled by permissions-limited GitHub tokens (along with the token given by default to an executing action).
