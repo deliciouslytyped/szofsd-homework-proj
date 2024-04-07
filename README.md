@@ -35,58 +35,58 @@ These must be configured as the following secrets:
 
 ## base
 - [x] basic java build works
-- [] basic JavaFX build works
-- [] JavaFX MVC GUI
-- [] feladat modell
-- [] tesztelhető / tesztek a modellhez
-- [] perzisztens adattárolás
-  - [] autosave/restore game
-- [] JDK 20
-- [] logging 
-  - [] to log file AND console
+- [ ] basic JavaFX build works
+- [ ] JavaFX MVC GUI
+- [ ] feladat modell
+- [ ] tesztelhető / tesztek a modellhez
+- [ ] perzisztens adattárolás
+  - [ ] autosave/restore game
+- [ ] JDK 20
+- [ ] logging 
+  - [ ] to log file AND console
 
 ## pom
-- [] developer metadata
-- [] encoding
-- [] basic build info
+- [ ] developer metadata
+- [ ] encoding
+- [ ] basic build info
 
 ## infra
-- [] maven wrapper (`mvn wrapper:wrapper -Dtype=source -Dmaven=3.8.1`; This is the current IntelliJ Maven version.)
+- [ ] maven wrapper (`mvn wrapper:wrapper -Dtype=source -Dmaven=3.8.1`; This is the current IntelliJ Maven version.)
   [https://maven.apache.org/wrapper/](https://maven.apache.org/wrapper/)
-- [] conventional commits
+- [ ] conventional commits
   [https://www.conventionalcommits.org/en/v1.0.0/](https://www.conventionalcommits.org/en/v1.0.0/)
 (a lot of the below items are driven by CI)
-- [] CI
- - [] tests
-  - [] (unit) tests succeed
-  - [] is JARable
+- [ ] CI
+ - [ ] tests
+  - [ ] (unit) tests succeed
+  - [ ] is JARable
 
 ## (code) quality
-- [] surefire tests
-- [] jacoco coverage
-- [] pmd
-- [] checkstyle
-- [] make sure paths are filtered for ascii characters
+- [ ] surefire tests
+- [ ] jacoco coverage
+- [ ] pmd
+- [ ] checkstyle
+- [ ] make sure paths are filtered for ascii characters
   (?: the mess on windows with people's usernames)
 
 ## portability
-- [] resources in src/main/resources, src/test/resources,
+- [ ] resources in src/main/resources, src/test/resources,
   make sure stuff gets packaged, use relative paths (the
   isolation of the CI tests will ensure this anyway)
 
 ### site
-- [] javadoc
-  - [] maven JXR
-  - [] package-info.java
-- [] generated screenshots
-- [] published build artifacts / releases
-  - [] (multiplatform JAR) (maven shade)
-   - [] mac
-   - [] windows
-   - [] linux
-  - [] graalvm binary
+- [ ] javadoc
+  - [ ] maven JXR
+  - [ ] package-info.java
+- [ ] generated screenshots
+- [ ] published build artifacts / releases
+  - [ ] (multiplatform JAR) (maven shade)
+   - [ ] mac
+   - [ ] windows
+   - [ ] linux
+  - [ ] graalvm binary
 
-- [] score server / competitive mode
+- [ ] score server / competitive mode
 
 # License
 This project is licensed under the [WTFPL](http://www.wtfpl.net/) to the extent possible.
