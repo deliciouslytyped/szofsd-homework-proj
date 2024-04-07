@@ -45,20 +45,20 @@ These must be configured as the following secrets:
 
 ### base
 - [x] basic java build works
-- [ ] basic JavaFX build works
+- [x] basic JavaFX build works
 - [ ] JavaFX MVC GUI
 - [ ] feladat modell
 - [ ] tesztelhető / tesztek a modellhez
 - [ ] perzisztens adattárolás
   - [ ] autosave/restore game
-- [ ] JDK 20
+- [x] JDK 20
 - [ ] logging 
   - [ ] to log file AND console
 
 ### pom
-- [ ] developer metadata
-- [ ] encoding
-- [ ] basic build info
+- [x] developer metadata
+- [x] encoding
+- [x] basic build info
 
 ### infra
 - [ ] maven wrapper (`mvn wrapper:wrapper -Dtype=source -Dmaven=3.8.1`; This is the current IntelliJ Maven version.)
@@ -69,13 +69,14 @@ These must be configured as the following secrets:
 - [ ] CI
  - [ ] tests
   - [ ] (unit) tests succeed
-  - [ ] is JARable
+  - [x] is JARable
 
 ### (code) quality
 - [ ] surefire tests
 - [ ] jacoco coverage
 - [ ] pmd
-- [ ] checkstyle
+- [x] checkstyle
+  [https://maven.apache.org/plugins/maven-checkstyle-plugin/](https://maven.apache.org/plugins/maven-checkstyle-plugin/)
 - [ ] make sure paths are filtered for ascii characters
   (?: the mess on windows with people's usernames)
 
@@ -86,9 +87,11 @@ These must be configured as the following secrets:
 
 ### site
 - [ ] javadoc
-  - [ ] maven JXR
+  - [x] maven JXR
+    [https://maven.apache.org/jxr/maven-jxr-plugin/](https://maven.apache.org/jxr/maven-jxr-plugin/)
   - [ ] package-info.java
 - [ ] generated screenshots
+  - [ ] scene / state select multiple screenshots
 - [ ] published build artifacts / releases
   - [ ] (multiplatform JAR) (maven shade)
    - [ ] mac
