@@ -25,6 +25,8 @@ jobs:
         run: |
           pushd repo
           ./mvnw package
+          ./mvnw package -Djava17
+          # TODO any significance of whether this uses -Djava17?
           ./mvnw site:site
 
       - name: Generate screenshots
@@ -50,13 +52,22 @@ jobs:
           pushd pages
           git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_REPOSITORY_OWNER}"; echo "password=${GITHUB_TOKEN}"; }; f'
 
-      - name: add screenshots to pages and push
+      - name: generate pages and push
         run: |
           pushd pages
           mkdir -p img
+          # add static content
           cp -r ../repo/site/* .
           cp -r ../repo/target/site .
+          # add screenshots
           cp ../repo/main_screen1.png img/
+          # NOTE there doesn't seem to be a way to make artifacts from a private repo
+          # action run accessible publicly without organization access (otherwise nightly.sh could work)
+          # So we have to be satisfied with spamming continuous releases..
+          url=$(hub release create -a java17/kyuubey-*.jar -a java20/kyuubey-*.jar "contdeliv-$(date +%F-%R:%S)" | grep http)
+          # TODO yeah yeah better normal static site generator
+          sed -i "s|__latest_20_jar_url__|$url/kyuubey-java20.jar|" index.html
+          sed -i "s|__latest_17_jar_url__|$url/kyuubey-java17.jar|" index.html
           git add -A
           git commit -m "Update site"
           git push

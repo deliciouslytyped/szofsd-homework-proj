@@ -19,6 +19,10 @@ a kocka piros lapja soha nem érintkezhet a tábla mezőivel.
 ### Notes
 See [./devnotes.md](./devnotes.md) for developer notes.
 
+# Building
+Building for SDK version 17 or 20 is configured by passing the `-Djava17` property.
+The build defaults to Java 20.
+
 # Development
 This project uses the following branches:
 - `master` (would be `1_develop`, but the repo forces `master`.)

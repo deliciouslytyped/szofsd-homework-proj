@@ -12,13 +12,44 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
-        <maven.compiler.release>20</maven.compiler.release>
         <javafx.version>20</javafx.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
         <maven.checkstyle.version>3.2.1</maven.checkstyle.version>
         <log4j.version>2.20.0</log4j.version>
         <exec.mainClass>game.Main</exec.mainClass>
     </properties>
+
+    <profiles>
+        <!-- "default" profile -->
+        <profile>
+            <id>java20</id>
+            <activation>
+              <property>
+                <name>!java17</name>
+              </property>
+            </activation>
+            <build>
+                <directory>java20</directory>
+            </build>
+            <properties>
+              <maven.compiler.release>20</maven.compiler.release>
+            </properties>
+        </profile>
+        <profile>
+            <id>java17</id>
+            <activation>
+              <property>
+                <name>java17</name>
+              </property>
+            </activation>
+            <build>
+                <directory>java17</directory>
+            </build>
+            <properties>
+              <maven.compiler.release>17</maven.compiler.release>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>

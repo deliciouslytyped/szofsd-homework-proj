@@ -45,6 +45,8 @@ jobs:
         run: |
           ./mvnw test
           ./mvnw package
+          ./mvnw test -Djava17
+          ./mvnw package -Djava17
 
       - name: Save artefacts
         uses: actions/upload-artifact@v3
