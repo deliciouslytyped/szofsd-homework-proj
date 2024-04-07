@@ -45,9 +45,9 @@ jobs:
       - name: Maven test
         run: |
           ./mvnw test
-          ./mvnw package
+          ./mvnw package shade:shade
           ./mvnw test -Djava17
-          ./mvnw package -Djava17
+          ./mvnw package shade:shade -Djava17
 
       - name: Save artefacts
         uses: actions/upload-artifact@v3
