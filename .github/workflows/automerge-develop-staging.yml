@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: "INBPM0420L/homework-project-deliciouslytyped/"
+          repository: "INBPM0420L/homework-project-deliciouslytyped"
 
       - name: Config git
         run: |
