@@ -593,8 +593,110 @@ https://stackoverflow.com/questions/43539956/how-to-stop-the-effect-of-ansi-text
 
 But really, changing it to any color other than black or white is probably fine I guess.
 
+### TODO javafx debugging flags
+https://wiki.openjdk.org/display/OpenJFX/Debug+Flags
+
+### TODO trying to figure out why 06b6b758a6424d27976a1576132c4cd0482a05ac and co. doesn't screenshot correctly
+In the meantime I figured out that the error message linked below is probably the X server closing before java, and not something in java crashing. Obviously the screenshot gets taken.
+TODO need an example of a failed screenshot here
+```
+x11 import crash - Google Search
+https://www.google.com/search?client=firefox-b-d&q=x11+import+crash
+
+" java: Fatal IO error 11 (Resource temporarily unavailable) on X server" - Google Search
+https://www.google.com/search?client=firefox-b-d&q=%22+java%3A+Fatal+IO+error+11+%28Resource+temporarily+unavailable%29+on+X+server%22
+
+import "Fatal IO error 11 (Resource temporarily unavailable) on X server" - Google Search
+https://www.google.com/search?client=firefox-b-d&q=import+%22Fatal+IO+error+11+%28Resource+temporarily+unavailable%29+on+X+server%22
+
+Fatal IO error 11 (Resource temporarily unavailable) on X server :0 · Issue #548 · autokey/autokey
+https://github.com/autokey/autokey/issues/548
+
+xvfb "Fatal IO error 11 (Resource temporarily unavailable) on X server" - Google Search
+https://www.google.com/search?client=firefox-b-d&q=xvfb+%22Fatal+IO+error+11+%28Resource+temporarily+unavailable%29+on+X+server%22
+
+linux - xvfb XIO: fatal IO error 11 (Resource temporarily unavailable) on X server - Super User
+https://superuser.com/questions/1553904/xvfb-xio-fatal-io-error-11-resource-temporarily-unavailable-on-x-server
+
+Unable to run gvim using xvfb-run · Issue #4213 · vim/vim
+https://github.com/vim/vim/issues/4213
+
+xvfb crash debug - Google Search
+https://www.google.com/search?client=firefox-b-d&q=xvfb+crash+debug
+
+1565847 – Xvfb randomly crashes during reset (when mutter as the last client disconnects)
+https://bugzilla.redhat.com/show_bug.cgi?id=1565847
+
+cant connect to xvfb-run display - Google Search
+https://www.google.com/search?q=cant+connect+to+xvfb-run+display&client=firefox-b-d&ei=S_11ZLXXDazpsAfoxKGQDA&ved=0ahUKEwj1qNSBlp3_AhWsNOwKHWhiCMIQ4dUDCA4&uact=5&oq=cant+connect+to+xvfb-run+display&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIKCCEQoAEQwwQQCjIKCCEQoAEQwwQQCjIKCCEQoAEQwwQQCjoKCAAQRxDWBBCwA0oECEEYAFD8BVijDWDhEGgBcAF4AIABfYgBoQOSAQMyLjKYAQCgAQHAAQHIAQg&sclient=gws-wiz-serp
+
+php - Xvfb: connection refused when running test script - Stack Overflow
+https://stackoverflow.com/questions/44088743/xvfb-connection-refused-when-running-test-script
+
+selenium - How to make Xvfb display visible? - Stack Overflow
+https://stackoverflow.com/questions/12050021/how-to-make-xvfb-display-visible
+
+"import" "no protocol specified" - Google Search
+https://www.google.com/search?q=%22import%22+%22no+protocol+specified%22&client=firefox-b-d&ei=6v11ZPTfE8j2sAfe8Ycg&ved=0ahUKEwj0_MLNlp3_AhVIO-wKHd74AQQQ4dUDCA4&uact=5&oq=%22import%22+%22no+protocol+specified%22&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIGCAAQFhAeOgoIABBHENYEELADOggIABAFEAcQHjoGCAAQCBAeSgQIQRgAUIQDWIckYMIlaAFwAXgAgAFWiAG6ApIBATSYAQCgAQHAAQHIAQg&sclient=gws-wiz-serp
+
+ssh - Unable to open display ":0" on ubuntu 11.04 (with unity) - Server Fault
+https://serverfault.com/questions/311724/unable-to-open-display-0-on-ubuntu-11-04-with-unity
+
+x11 - Error `No protocol specified` when running from remote machine via ssh - Unix & Linux Stack Exchange
+https://unix.stackexchange.com/questions/85782/error-no-protocol-specified-when-running-from-remote-machine-via-ssh
+
+xvfb-run xhost - Google Search
+https://www.google.com/search?client=firefox-b-d&q=xvfb-run+xhost
+
+Ubuntu Manpage: xvfb-run - run specified X client or command in a virtual X server environment
+https://manpages.ubuntu.com/manpages/xenial/man1/xvfb-run.1.html
+
+xauth protocol - Google Search
+https://www.google.com/search?client=firefox-b-d&q=xauth+protocol
+
+XAUTH
+https://www.x.org/archive/X11R7.7/doc/man/man1/xauth.1.xhtml
+
+Gentoo Forums :: View topic - Xauthority and how do i disable it, or make it work, FIXED
+https://forums.gentoo.org/viewtopic-t-261055-start-0.html
+
+Gentoo Forums :: View topic - X Forwarding no longer working
+https://forums.gentoo.org/viewtopic.php?t=249655
+
+x11 disable auth checking - Google Search
+https://www.google.com/search?client=firefox-b-d&q=x11+disable+auth+checking
+
+xorg - How to completely disable X authentication on boot? - Super User
+https://superuser.com/questions/1433957/how-to-completely-disable-x-authentication-on-boot
+
+x11 disable authentication - Google Search
+https://www.google.com/search?client=firefox-b-d&q=x11+disable+authentication
+
+linux - annoying message "X11 connection rejected because of wrong authentication" while there is no problem at all - Unix & Linux Stack Exchange
+https://unix.stackexchange.com/questions/162979/annoying-message-x11-connection-rejected-because-of-wrong-authentication-while
+
+xserver man page - Google Search
+https://www.google.com/search?client=firefox-b-d&q=xserver+man+page
+
+xvfb-run dont auth - Google Search
+https://www.google.com/search?client=firefox-b-d&q=xvfb-run+dont+auth
+
+ffmpeg - trying to get --listen-tcp on xvfb-run - Unix & Linux Stack Exchange
+https://unix.stackexchange.com/questions/346386/trying-to-get-listen-tcp-on-xvfb-run
+
+revnode/xvfb-run: The xvfb-run script from the X11 project.
+https://github.com/revnode/xvfb-run
+
+ImageMagick – Command-line Options
+https://imagemagick.org/script/command-line-options.php#write
+
+XSERVER(1) manual page
+https://www.x.org/archive/X11R6.8.0/doc/Xserver.1.html#sect10
+```
+
+
 ### misc
-1. Get help with `help:help`, `buildplan:`
+1. Get help with `help:help`, `buildplan:`, `help:effective-pom`, `help:active-profiles`
 2. `help:describe -Dplugin=javafx -Dgoal=run`
 3. `exec:exec` does not imply `compile` for some reason.
 4. Change current git branch name with `git branch -m [oldname] newname`
