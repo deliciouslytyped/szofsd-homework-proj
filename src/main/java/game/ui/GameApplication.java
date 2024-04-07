@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import game.ui.SceneStateMachine;
 
-import org.scenicview.ScenicView;
+//import org.scenicview.ScenicView;
 
 import game.Settings;
 
@@ -40,7 +40,7 @@ public class GameApplication extends Application {
 
     if (System.getProperty(Settings.DebugFXSetting) != null){
       stage.setAlwaysOnTop(true);
-      ScenicView.show(stage.getScene());
+      //ScenicView.show(stage.getScene());
     }
 
 
