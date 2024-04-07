@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: JAR
-          path: target
+          path: java20
 
       # workaround for https://github.com/orgs/community/discussions/25702
       - name: Push

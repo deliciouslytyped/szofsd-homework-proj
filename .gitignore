@@ -100,6 +100,8 @@ fabric.properties
 
 ### Maven ###
 target/
+java20/
+java17/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

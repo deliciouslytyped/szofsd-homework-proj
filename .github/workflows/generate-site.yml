@@ -32,8 +32,8 @@ jobs:
       - name: Generate screenshots
         run: |
           pushd repo
-          #xvfb-run -s "-screen 0 800x600x24" bash -O extglob -c "java -jar target/!(original-*).jar & { sleep 3; import -window root $(pwd)/main_screen1.png; }; sleep 7;"
-          Xvfb :5 -screen 0 800x600x24 & bash -O extglob -c 'export DISPLAY=:5; set -x ; java -Dprism.verbose=true -jar target/!(original-*).jar & { sleep 7; import -debug Trace -screen -window root $(pwd)/main_screen1.png; }; kill -9 %1;';
+          #xvfb-run -s "-screen 0 800x600x24" bash -O extglob -c "java -jar java20/!(original-*).jar & { sleep 3; import -window root $(pwd)/main_screen1.png; }; sleep 7;"
+          Xvfb :5 -screen 0 800x600x24 & bash -O extglob -c 'export DISPLAY=:5; set -x ; java -Dprism.verbose=true -jar java20/!(original-*).jar & { sleep 7; import -screen -window root $(pwd)/main_screen1.png; }; kill -9 %1;';
 
       - uses: actions/checkout@v3
         with:
@@ -58,7 +58,7 @@ jobs:
           mkdir -p img
           # add static content
           cp -r ../repo/site/* .
-          cp -r ../repo/target/site .
+          cp -r ../repo/java20/site .
           # add screenshots
           cp ../repo/main_screen1.png img/
           # NOTE there doesn't seem to be a way to make artifacts from a private repo
