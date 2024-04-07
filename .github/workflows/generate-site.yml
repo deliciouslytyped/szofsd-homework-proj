@@ -1,0 +1,58 @@
+name: Generate Website
+on:
+  push:
+    branches: [ "3_deploy" ]
+jobs:
+  generate-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: "INBPM0420L/homework-project-deliciouslytyped"
+          path: "repo"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 20
+          distribution: "temurin"
+          cache: "maven"
+
+      - name: Maven stuff
+        run: |
+          pushd repo
+          #mvn package
+          mvn site:site
+
+      - name: Generate screenshots
+        run: |
+          pushd repo
+          xvfb-run -s "-screen 0 800x600x24" bash -c "java -jar target/game-1.0-SNAPSHOT.jar & { sleep 3; import -window root $(pwd)/main_screen1.png; }"
+
+      - uses: actions/checkout@v3
+        with:
+          repository: "deliciouslytyped/szof-pg"
+          path: "pages"
+          token: ${{ secrets.PAGES_PUSH_TOKEN }}
+
+      - name: Config git
+        run: |
+          pushd pages
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+      - name: Auth
+        run: |
+          pushd pages
+          git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_REPOSITORY_OWNER}"; echo "password=${GITHUB_TOKEN}"; }; f'
+
+      - name: add screenshots to pages and push
+        run: |
+          pushd pages
+          mkdir -p img
+          cp -r ../repo/site/* .
+          cp -r ../repo/target/site .
+          cp ../repo/main_screen1.png img/
+          git add -A
+          git commit -m "Update site"
+          git push
