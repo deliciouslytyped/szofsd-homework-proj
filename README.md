@@ -3,6 +3,9 @@
 #### TOC
 TODO
 
+# TODO
+- TODO mopar said everyone switched to logback instead of log4j? https://logback.qos.ch/reasonsToSwitch.html
+
 # Original Description
 2.44. Feladat
 Egy 7 × 7 mezőből álló táblán a 46. ábrán látható módon van elhelyezve tíz
@@ -59,8 +62,11 @@ These must be configured as the following secrets:
 - [ ] perzisztens adattárolás
   - [ ] autosave/restore game
 - [x] JDK 20
-- [ ] logging 
-  - [ ] to log file AND console
+- [x] logging 
+  - [x] to log file AND console
+  - [ ] log sensible information and events at sensible levels
+
+- [ ] AI solver
 
 ### pom
 - [x] developer metadata
@@ -83,6 +89,7 @@ These must be configured as the following secrets:
 - [ ] jacoco coverage
 - [ ] pmd
 - [x] checkstyle
+  - [ ] checkstyle satisfied
   [https://maven.apache.org/plugins/maven-checkstyle-plugin/](https://maven.apache.org/plugins/maven-checkstyle-plugin/)
 - [ ] make sure paths are filtered for ascii characters
   (?: the mess on windows with people's usernames)
@@ -97,7 +104,7 @@ These must be configured as the following secrets:
   - [x] maven JXR
     [https://maven.apache.org/jxr/maven-jxr-plugin/](https://maven.apache.org/jxr/maven-jxr-plugin/)
   - [ ] package-info.java
-- [ ] generated screenshots
+- [x] generate screenshots in CI
   - [ ] scene / state select multiple screenshots
 - [ ] published build artifacts / releases
   - [ ] (multiplatform JAR) (maven shade)
