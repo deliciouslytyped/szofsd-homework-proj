@@ -37,7 +37,7 @@ These must be configured as the following secrets:
 
 # TODO / Plan
 
-## base
+### base
 - [x] basic java build works
 - [ ] basic JavaFX build works
 - [ ] JavaFX MVC GUI
@@ -49,12 +49,12 @@ These must be configured as the following secrets:
 - [ ] logging 
   - [ ] to log file AND console
 
-## pom
+### pom
 - [ ] developer metadata
 - [ ] encoding
 - [ ] basic build info
 
-## infra
+### infra
 - [ ] maven wrapper (`mvn wrapper:wrapper -Dtype=source -Dmaven=3.8.1`; This is the current IntelliJ Maven version.)
   [https://maven.apache.org/wrapper/](https://maven.apache.org/wrapper/)
 - [ ] conventional commits
@@ -65,7 +65,7 @@ These must be configured as the following secrets:
   - [ ] (unit) tests succeed
   - [ ] is JARable
 
-## (code) quality
+### (code) quality
 - [ ] surefire tests
 - [ ] jacoco coverage
 - [ ] pmd
@@ -73,7 +73,7 @@ These must be configured as the following secrets:
 - [ ] make sure paths are filtered for ascii characters
   (?: the mess on windows with people's usernames)
 
-## portability
+### portability
 - [ ] resources in src/main/resources, src/test/resources,
   make sure stuff gets packaged, use relative paths (the
   isolation of the CI tests will ensure this anyway)
@@ -92,5 +92,5 @@ These must be configured as the following secrets:
 
 - [ ] score server / competitive mode
 
-# License
+### License
 This project is licensed under the [WTFPL](http://www.wtfpl.net/) to the extent possible.
