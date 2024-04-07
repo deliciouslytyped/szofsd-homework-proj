@@ -1,12 +1,28 @@
-<Configuration status="WARN">
+<!-- TODO: Isn't there some way to have the Configuration status=... route to a file appender? -->
+<Configuration status="TRACE">
     <Appenders>
-        <Console name="STDOUT">
-            <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n}{trace=cyan}"/>
-        </Console>
+      <!-- Why do java libraries need so many obscure hacks?
+           This uses the trick explained in the following link,
+           so that we can use system properties set at runtime.
+           https://stackoverflow.com/questions/50405298/log4j-2-lookup-values-are-used-in-config-before-they-are-loaded-present/50459264#50459264
+      -->
+      <Routing name="Routing">
+        <Routes pattern="$${sys:app.logPath}">
+          <Route>
+            <File name="FileLog" fileName="${sys:app.logPath}/app.log">
+              <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n}{trace=cyan}"/>
+            </File>  
+          </Route>
+        </Routes>
+      </Routing>
+      <Console name="STDOUT">
+        <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n}{trace=cyan}"/>
+      </Console>
     </Appenders>
     <Loggers>
-        <Root level="TRACE">
-            <AppenderRef ref="STDOUT"/>
-        </Root>
+      <Root level="TRACE">
+        <AppenderRef ref="Routing"/>
+        <AppenderRef ref="STDOUT"/>
+      </Root>
     </Loggers>
 </Configuration>

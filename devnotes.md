@@ -694,6 +694,9 @@ XSERVER(1) manual page
 https://www.x.org/archive/X11R6.8.0/doc/Xserver.1.html#sect10
 ```
 
+# Log4j "resolving values too early"
+TODO write some notes on this
+The actual problem was probably that I was calling the logger too early in some other code, but I only figured it out because of which log messages were ending up in the wrong directories.
 
 ### misc
 1. Get help with `help:help`, `buildplan:`, `help:effective-pom`, `help:active-profiles`
@@ -715,3 +718,4 @@ https://www.x.org/archive/X11R6.8.0/doc/Xserver.1.html#sect10
 #### TODO Questions
 1. Is there any relationship between -D and properties files?
 2. Can Log4j be configured up with -D without a configuration file?
+
