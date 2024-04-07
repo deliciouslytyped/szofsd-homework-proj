@@ -1,0 +1,42 @@
+#TODO these need a lot of work
+# https://github.com/actions/starter-workflows/blob/main/ci/maven.yml
+# https://medium.com/@karlstad/create-a-github-actions-workflow-that-auto-merges-the-master-back-to-dev-branch-8b1ebe7009b3
+# https://stackoverflow.com/questions/8536732/can-i-hold-git-credentials-in-environment-variables/43022442#43022442
+name: Automerge develop to staging
+
+on:
+  push:
+    branches: [ "1_develop" ]
+
+jobs:
+  merge-to-staging:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: "INBPM0420L/homework-project-deliciouslytyped/"
+
+      - name: Config git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+      - name: Merge develop to staging
+        run: |
+          git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_REPOSITORY_OWNER}"; echo "password=${GITHUB_TOKEN}"; }; f'
+          #  TODO IDK why these are the steps
+          git fetch --unshallow
+          git checkout 2_staging
+          git pull
+          git merge 1_develop \
+           -m "Merge develop to staging" \
+           --no-ff
+
+      # workaround for https://github.com/orgs/community/discussions/25702
+      - name: Push
+        run: |
+          export GITHUB_TOKEN=${{ secrets.PUSH_TOKEN }}
+          sed -i 's/extraheader.*$//' .git/config
+          git push

@@ -106,6 +106,9 @@ NOTE: apparently the wrapper explanatory page is different from the wrapper plug
 https://maven.apache.org/wrapper/
 https://maven.apache.org/wrapper/maven-wrapper-plugin/usage.html
 
+### Merging in shallow clones or something errors with cant merge unrelated histories
+I don't have any errors for this offhand anymore, when doing merges in github actions, `git fetch --unshallow` _is_ needed other wise you have to use --allow-unrelated histories, but that's /wrong/ in this case.
+
 ### misc
 1. Get help with `help:help`, `buildplan:`
 2. `help:describe -Dplugin=javafx -Dgoal=run`
@@ -117,3 +120,4 @@ https://maven.apache.org/wrapper/maven-wrapper-plugin/usage.html
 8. maven site / javadoc empirically seems to use relative paths
 9. Having an ssh and a MobaXterm session open, with the latter forwarding X11 to its Xorg and the former using DISPLAY works just fine
 10. cache git credentials for some time `git config --local credential.helper "cache --timeout=$((3600*4))"`
+11. So far dropping into a reverse shell in GitHub Actions seems to be the best way to debug them. TODO code sample / oneliner

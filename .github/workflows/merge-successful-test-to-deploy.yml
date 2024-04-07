@@ -1,0 +1,60 @@
+#TODO these need a lot of work
+# https://github.com/actions/starter-workflows/blob/main/ci/maven.yml
+# https://medium.com/@karlstad/create-a-github-actions-workflow-that-auto-merges-the-master-back-to-dev-branch-8b1ebe7009b3
+# https://stackoverflow.com/questions/8536732/can-i-hold-git-credentials-in-environment-variables/43022442#43022442
+name: Merge successful staging tests to deploy
+
+on:
+  push:
+    branches: [ "2_staging" ]
+
+jobs:
+  merge-to-deploy:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: "INBPM0420L/homework-project-deliciouslytyped"
+
+      - name: Config git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+      - name: Merge staging to deploy
+        run: |
+          git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_REPOSITORY_OWNER}"; echo "password=${GITHUB_TOKEN}"; }; f'
+          # TODO IDK why these are the steps
+          git fetch --unshallow
+          git checkout 3_deploy
+          git pull
+          git merge 2_staging \
+           -m "Merge staging to deploy after successful tests" \
+           --no-ff
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 20
+          distribution: "temurin"
+          cache: "maven"
+
+      - name: Maven test
+        run: |
+          mvn test
+          #mvn package
+
+      - name: Save artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: JAR
+          path: target
+
+      # workaround for https://github.com/orgs/community/discussions/25702
+      - name: Push
+        run: |
+          export GITHUB_TOKEN=${{ secrets.PUSH_TOKEN }}
+          sed -i 's/extraheader.*$//' .git/config
+          git push
