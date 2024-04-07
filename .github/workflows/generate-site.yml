@@ -53,6 +53,10 @@ jobs:
           pushd pages
           git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_REPOSITORY_OWNER}"; echo "password=${GITHUB_TOKEN}"; }; f'
 
+      - name: install hub
+        # https://github.com/mislav/hub/issues/3338  hub is not available on GitHub actions
+        uses: geertvdc/setup-hub@master
+
       - name: generate pages and push
         # https://github.com/mislav/hub/issues/3338  hub is not available on GitHub actions
         uses: geertvdc/setup-hub@master
