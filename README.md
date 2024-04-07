@@ -15,7 +15,7 @@ a kocka piros lapja soha nem érintkezhet a tábla mezőivel.
 
 # Development
 This project uses the following branches:
-- master (would be `1_develop`, but the repo forces `master`.)
+- `master` (would be `1_develop`, but the repo forces `master`.)
 - `2_staging`
 - `3_deploy`
 
