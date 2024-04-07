@@ -6,7 +6,8 @@ name: Automerge develop to staging
 
 on:
   push:
-    branches: [ "1_develop" ]
+#    branches: [ "1_develop" ]
+    branches: [ "master" ]
 
 jobs:
   merge-to-staging:
