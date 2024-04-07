@@ -14,7 +14,7 @@
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <maven.compiler.release>17</maven.compiler.release>
         <javafx.version>20</javafx.version>
-        <exec.mainClass><!-- TODO: the main class of your application that contains the main method --></exec.mainClass>
+        <exec.mainClass>game.Main</exec.mainClass>
     </properties>
 
     <dependencies>
