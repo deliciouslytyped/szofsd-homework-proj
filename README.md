@@ -1,5 +1,8 @@
 # KYUUBEY.SWF.EXE.JAR
 
+#### TOC
+TODO
+
 # Original Description
 2.44. Feladat
 Egy 7 × 7 mezőből álló táblán a 46. ábrán látható módon van elhelyezve tíz
@@ -12,6 +15,9 @@ a kocka piros lapja soha nem érintkezhet a tábla mezőivel.
 <p align="center">
   <img src="./feladat.svg" style="width: 50%;" />
 </p>
+
+### Notes
+See [./devnotes.md](./devnotes.md) for developer notes.
 
 # Development
 This project uses the following branches:
