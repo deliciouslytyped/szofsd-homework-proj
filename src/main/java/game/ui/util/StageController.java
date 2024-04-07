@@ -25,6 +25,7 @@ public abstract class StageController {
   // TODO need to documenta lot of stuff related to this in devdocs
   @FXML
   private Pane stageHack;
+  protected Stage stage;
 
 
   //TODO figure out what to name this class, it's semi-global state local to a given stage
@@ -49,7 +50,8 @@ public abstract class StageController {
           if (oldWindow == null && newWindow != null) {
             log.trace("New window initialized.");
             //properties = (UIState) ((Stage)stageHack.getScene().getWindow()).getUserData();
-            state = (UIState) ((Stage)stageHack.getScene().getWindow()).getUserData();
+            stage = (Stage)stageHack.getScene().getWindow();
+            state = (UIState) stage.getUserData();
 
             myInitialize(); //TODO this needs a rename
             log.trace("New controller initialized.");
