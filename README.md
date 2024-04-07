@@ -39,8 +39,11 @@ These must be configured as the following secrets:
 - `PAGES_PUSH_TOKEN` must give write access to the pages repository.
 
 # Conventions
-- No true singletons. This allows running multiple instances of the application core.
-
+- Try to avoid / no singletons. This allows running multiple instances of the application core.
+- https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+- conventional commits cheatsheets (TODO)
+  https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3
+  https://michaelcurrin.github.io/dev-cheatsheets/cheatsheets/other/conventional-commits.html
 # TODO / Plan
 
 ### base
