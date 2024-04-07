@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
 import javafx.scene.paint.Color;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Transform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -98,7 +100,15 @@ public class GameController extends StageController {
 
        log.trace("Set up player interactivity bindings.");
        // TODO this is a hack until i fix the multiple event handlers issue
-       bindPlayer(ga, newModel);
+       renderArea.setOnKeyPressed(k -> {
+         handlePlayer(ga, newModel, k);
+         handleScene(k);
+       });
+
+       renderArea.setOnMouseDragged(e -> {
+         handleWorld(sceneRoot, e);
+       });
+
        /*
        bindPlayer(ga);
        bindWorld(sceneRoot);
@@ -133,7 +143,9 @@ public class GameController extends StageController {
   }
 
   private void setUpInteractivity(){
-    bindScene();
+    renderArea.setOnKeyPressed((k) -> {
+      handleScene(k);
+    });
     renderArea.setFocusTraversable(true);
     renderArea.requestFocus();
   }
@@ -141,61 +153,46 @@ public class GameController extends StageController {
   // TODO make sure this is done properly
   // TODO not sure if there is a way to do this without passing the argument,
   //   the lambda capturing object refernce by value is necessitating this
-  private void bindPlayer(IGridAnimator ga, GameModel model){
-    renderArea.setOnKeyPressed(k -> {
-      log.trace("bindplayer key pressed: {}", k);
-      switch (k.getCode()) {
-        case W -> { model.tryMove(Direction.UP); } // TODO had to relabel these
-        case S -> { model.tryMove(Direction.DOWN); }
-        case A -> { model.tryMove(Direction.LEFT); }
-        case D -> { model.tryMove(Direction.RIGHT); }
-
-        // TODO event handler hacks
-        case LEFT -> { camera.setTranslateX(camera.translateXProperty().add(10).getValue()); }
-        case RIGHT -> { camera.setTranslateX(camera.translateXProperty().add(-10).getValue()); }
-        case DOWN -> { camera.setTranslateY(camera.translateYProperty().add(10).getValue()); }
-        case UP -> { camera.setTranslateY(camera.translateYProperty().add(-10).getValue()); }
-        case NUMPAD8 -> { camera.setTranslateZ(camera.getTranslateZ() + 10); }
-        case NUMPAD2 -> { camera.setTranslateZ(camera.getTranslateZ() - 10); }
-        case Q -> { System.exit(0); }
-        case R -> { model.debugFireMap(); } // Trigger world reinit
-      };
-    });
+  private void handlePlayer(IGridAnimator ga, GameModel model, KeyEvent k){
+    log.trace("bindplayer key pressed: {}", k);
+    switch (k.getCode()) {
+      case W -> { model.tryMove(Direction.UP); } // TODO had to relabel these
+      case S -> { model.tryMove(Direction.DOWN); }
+      case A -> { model.tryMove(Direction.LEFT); }
+      case D -> { model.tryMove(Direction.RIGHT); }
+    };
   }
 
   // TODO same as bindPlayer, not sure if there is a way to do this without passing the argument,
   //   the lambda capturing object refernce by value is necessitating this
-  private void bindWorld(Group sceneRoot){
+  private void handleWorld(Group sceneRoot, MouseEvent e){
     //TODO this doesn't work nicely
-    renderArea.setOnMouseDragged(e -> {
-      log.trace("rotating");
-      Rotate a = new Rotate(e.getY(), Rotate.X_AXIS);
-      Rotate b = new Rotate(e.getX(), Rotate.Y_AXIS);
-      sceneRoot.getTransforms().clear();
-      sceneRoot.getTransforms().addAll(a, b);
-      //if (e.getEventType().) {
-        //TODO fix and use transforms instead of rotobject
-        //mapRoot.absrot(Math.min(Math.max(e.getY(), 0), 180), 0, e.getX());
-      //}
-    });
+    log.trace("rotating");
+    Rotate a = new Rotate(e.getY(), Rotate.X_AXIS);
+    Rotate b = new Rotate(e.getX(), Rotate.Y_AXIS);
+    sceneRoot.getTransforms().clear();
+    sceneRoot.getTransforms().addAll(a, b);
+    //if (e.getEventType().) {
+      //TODO fix and use transforms instead of rotobject
+      //mapRoot.absrot(Math.min(Math.max(e.getY(), 0), 180), 0, e.getX());
+    //}
   }
 
   // TODO make sure this is done properly
-  private void bindScene(){
-    renderArea.setOnKeyPressed(k -> {
-      log.trace("bindscene key pressed: {}", k);
-      // TODO hack
-      camera.translateXProperty().unbind();
-      camera.translateYProperty().unbind();
-      switch (k.getCode()) {
-        case LEFT -> { camera.setTranslateX(camera.translateXProperty().add(10).getValue()); }
-        case RIGHT -> { camera.setTranslateX(camera.translateXProperty().add(-10).getValue()); }
-        case DOWN -> { camera.setTranslateY(camera.translateYProperty().add(10).getValue()); }
-        case UP -> { camera.setTranslateY(camera.translateYProperty().add(-10).getValue()); }
-        case NUMPAD8 -> { camera.setTranslateZ(camera.getTranslateZ() + 10); }
-        case NUMPAD2 -> { camera.setTranslateZ(camera.getTranslateZ() - 10); }
-        case Q -> { System.exit(0); }
-        case R -> { model.getValue().debugFireMap(); } // Trigger world reinit
+  private void handleScene(KeyEvent k){
+    log.trace("bindscene key pressed: {}", k);
+    // TODO hack
+    camera.translateXProperty().unbind();
+    camera.translateYProperty().unbind();
+    switch (k.getCode()) {
+      case LEFT -> { camera.setTranslateX(camera.translateXProperty().add(10).getValue()); }
+      case RIGHT -> { camera.setTranslateX(camera.translateXProperty().add(-10).getValue()); }
+      case DOWN -> { camera.setTranslateY(camera.translateYProperty().add(10).getValue()); }
+      case UP -> { camera.setTranslateY(camera.translateYProperty().add(-10).getValue()); }
+      case NUMPAD8 -> { camera.setTranslateZ(camera.getTranslateZ() + 10); }
+      case NUMPAD2 -> { camera.setTranslateZ(camera.getTranslateZ() - 10); }
+      case Q -> { System.exit(0); }
+      case R -> { model.getValue().debugFireMap(); } // Trigger world reinit
 
         // TODO Rotation is till all kinds of screwed up in this framework...
 /*
@@ -217,8 +214,7 @@ public class GameController extends StageController {
           mapRoot.setRotate(mapRoot.getRotate() + 5);
           }
 */
-      };
-    });
+    };
   }
 
 
