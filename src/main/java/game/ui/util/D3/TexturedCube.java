@@ -21,7 +21,7 @@ public class TexturedCube extends MeshView {
   float[] normals;
   int[] faces;
 
-  public ObjectProperty<Integer> activeSide;
+  public ObjectProperty<CubeFace> activeSide;
   TexturedCube(float size, int side){
   super();
 
@@ -35,14 +35,14 @@ public class TexturedCube extends MeshView {
   mesh.getFaces().addAll(faces);
 
   setMesh(mesh);
-  activeSide = new SimpleObjectProperty<Integer>();
+  activeSide = new SimpleObjectProperty<CubeFace>();
   activeSide.addListener((observable, oldVal, newVal) -> {
     setTexture(newVal);
   });
   activeSide.setValue(CubeFace.TOP);
   }
 
-  private void setTexture(int side){
+  private void setTexture(CubeFace side){
     log.trace("setting texture active side to {}", side);
     var ph = new PhongMaterial();
     Canvas canvas = new Canvas(4*32,3*32); // the interpolation leads to soft edges. not sure how to turn it off.
@@ -52,14 +52,14 @@ public class TexturedCube extends MeshView {
     gc.fillRect(0,0,16*32,12*32);
     gc.setFill(Color.RED);
     switch (side){
-      case CubeFace.TOP -> { gc.fillRect(1*32,0*32,1*32,1*32); } // "top"
-      case CubeFace.FRONT -> { gc.fillRect(1*32,1*32,1*32,1*32); } // "front"
-      case CubeFace.BOTTOM -> { gc.fillRect(1*32,2*32,1*32,1*32); } // "bottom"
-      case CubeFace.RIGHT -> { gc.fillRect(0*32,1*32,1*32,1*32); } // right
-      case CubeFace.LEFT -> { gc.fillRect(2*32,1*32,1*32,1*32); } // left
-      case CubeFace.BACK -> { gc.fillRect(3*32,1*32,1*32,1*32); } // back
+      case TOP -> { gc.fillRect(1*32,0*32,1*32,1*32); } // "top"
+      case FRONT -> { gc.fillRect(1*32,1*32,1*32,1*32); } // "front"
+      case BOTTOM -> { gc.fillRect(1*32,2*32,1*32,1*32); } // "bottom"
+      case RIGHT -> { gc.fillRect(0*32,1*32,1*32,1*32); } // right
+      case LEFT -> { gc.fillRect(2*32,1*32,1*32,1*32); } // left
+      case BACK -> { gc.fillRect(3*32,1*32,1*32,1*32); } // back
     }
-    if (side == 3){
+    if (side == CubeFace.BOTTOM){
       log.error("bottom active.");
     }
     ph.setDiffuseMap(canvas.snapshot(null,null));

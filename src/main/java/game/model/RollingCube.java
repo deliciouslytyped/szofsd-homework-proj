@@ -6,7 +6,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 
 @Slf4j
 public class RollingCube {
-  private ReadOnlyObjectWrapper<Integer> activeFace = new ReadOnlyObjectWrapper();
+  private ReadOnlyObjectWrapper<CubeFace> activeFace = new ReadOnlyObjectWrapper();
 
   public RollingCube() {
     reset();
@@ -16,71 +16,67 @@ public class RollingCube {
     activeFace.setValue(CubeFace.TOP);
   }
 
-  public ReadOnlyObjectProperty<Integer> activeFaceProperty() {
+  public ReadOnlyObjectProperty<CubeFace> activeFaceProperty() {
     return activeFace.getReadOnlyProperty();
   }
 
-  public void roll(Direction d){
+  public void roll(CubeDirection d){
     var next = nextRedFace(d);
     log.trace("setting model active face from {} to {} through direction {}", activeFace.getValue(), next, d);
     activeFace.setValue(next);
   }
 
   //TODO separate CubeDirection
-  public int nextRedFace(Direction d){
+  public CubeFace nextRedFace(CubeDirection d){
     return switch (d) {
-      case UP -> rollForwards(activeFace.getValue());
+      case FORWARD -> rollForwards(activeFace.getValue());
       case RIGHT -> rollRight(activeFace.getValue());
-      case DOWN -> rollBackwards(activeFace.getValue());
+      case BACKWARD -> rollBackwards(activeFace.getValue());
       case LEFT -> rollLeft(activeFace.getValue());
     };
   }
 
-  public static Integer rollBackwards(int currentRedFace) {
+  public static CubeFace rollBackwards(CubeFace currentRedFace) {
     return switch (currentRedFace){
-      case CubeFace.TOP -> CubeFace.BACK;
-      case CubeFace.BACK -> CubeFace.BOTTOM;
-      case CubeFace.BOTTOM -> CubeFace.FRONT;
-      case CubeFace.LEFT -> CubeFace.LEFT;
-      case CubeFace.RIGHT -> CubeFace.RIGHT;
-      case CubeFace.FRONT -> CubeFace.TOP;
-      default -> throw new IllegalStateException("Unexpected value: " + currentRedFace);
+      case TOP -> CubeFace.BACK;
+      case BACK -> CubeFace.BOTTOM;
+      case BOTTOM -> CubeFace.FRONT;
+      case LEFT -> CubeFace.LEFT;
+      case RIGHT -> CubeFace.RIGHT;
+      case FRONT -> CubeFace.TOP;
     };
   }
 
-  public static Integer rollForwards(int currentRedFace) {
+  public static CubeFace rollForwards(CubeFace currentRedFace) {
     return switch (currentRedFace){
-      case CubeFace.BACK -> CubeFace.TOP; // note these are the reverse of the above
-      case CubeFace.BOTTOM -> CubeFace.FRONT;
-      case CubeFace.FRONT -> CubeFace.BOTTOM;
-      case CubeFace.LEFT -> CubeFace.LEFT;
-      case CubeFace.RIGHT -> CubeFace.RIGHT;
-      case CubeFace.TOP -> CubeFace.FRONT;
-      default -> throw new IllegalStateException("Unexpected value: " + currentRedFace);
+      case BACK -> CubeFace.TOP; // note these are the reverse of the above
+      case BOTTOM -> CubeFace.FRONT;
+      case FRONT -> CubeFace.BOTTOM;
+      case LEFT -> CubeFace.LEFT;
+      case RIGHT -> CubeFace.RIGHT;
+      case TOP -> CubeFace.FRONT;
     };
   }
 
-  public static Integer rollRight(int currentRedFace) {
+  public static CubeFace rollRight(CubeFace currentRedFace) {
     return switch (currentRedFace){
-      case CubeFace.TOP -> CubeFace.RIGHT;
-      case CubeFace.RIGHT -> CubeFace.BOTTOM;
-      case CubeFace.BOTTOM -> CubeFace.LEFT;
-      case CubeFace.LEFT -> CubeFace.TOP;
-      case CubeFace.BACK -> CubeFace.BACK;
-      case CubeFace.FRONT -> CubeFace.FRONT;
-      default -> throw new IllegalStateException("Unexpected value: " + currentRedFace);
+      case TOP -> CubeFace.RIGHT;
+      case RIGHT -> CubeFace.BOTTOM;
+      case BOTTOM -> CubeFace.LEFT;
+      case LEFT -> CubeFace.TOP;
+      case BACK -> CubeFace.BACK;
+      case FRONT -> CubeFace.FRONT;
     };
   }
 
-  public static Integer rollLeft(int currentRedFace) {
+  public static CubeFace rollLeft(CubeFace currentRedFace) {
     return switch (currentRedFace){
-      case CubeFace.RIGHT -> CubeFace.TOP;
-      case CubeFace.BOTTOM -> CubeFace.RIGHT;
-      case CubeFace.LEFT -> CubeFace.BOTTOM;
-      case CubeFace.TOP -> CubeFace.LEFT;
-      case CubeFace.BACK -> CubeFace.BACK;
-      case CubeFace.FRONT -> CubeFace.FRONT;
-      default -> throw new IllegalStateException("Unexpected value: " + currentRedFace);
+      case RIGHT -> CubeFace.TOP;
+      case BOTTOM -> CubeFace.RIGHT;
+      case LEFT -> CubeFace.BOTTOM;
+      case TOP -> CubeFace.LEFT;
+      case BACK -> CubeFace.BACK;
+      case FRONT -> CubeFace.FRONT;
     };
   }
 

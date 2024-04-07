@@ -64,28 +64,18 @@ public class GameModel {
   }
 
   public boolean canMove(Direction d){
-    var nextRed = player.getValue().nextRedFace(globalToCubeLocal(d));
+    var nextRed = player.getValue().nextRedFace(CubeDirection.fromGlobal(d));
     var b = spaceFreeFromTo(position.getValue(), d) && (nextRed != CubeFace.BOTTOM);
     log.trace("can move in direction {} with current red face {} and next red face {}?: {}", d, player.getValue().activeFaceProperty().getValue(), nextRed, b);
     return b;
-  }
-
-
-  public Direction globalToCubeLocal(Direction d){
-    return switch(d){
-      case UP -> Direction.RIGHT;
-      case DOWN -> Direction.LEFT;
-      case LEFT -> Direction.UP;
-      case RIGHT -> Direction.DOWN;
-    };
   }
 
   public void tryMove(Direction d){
     log.trace("trying to move: {}", d);
     if (canMove(d)) {
       position.setValue(position.getValue().getPosition(d));
-      log.trace("model setting rollingcube active face to {} through direction {}", player.getValue().nextRedFace(globalToCubeLocal(d)), d);
-      player.getValue().roll(globalToCubeLocal(d));
+      log.trace("model setting rollingcube active face to {} through direction {}", player.getValue().nextRedFace(CubeDirection.fromGlobal(d)), d);
+      player.getValue().roll(CubeDirection.fromGlobal(d));
     }
   }
 
