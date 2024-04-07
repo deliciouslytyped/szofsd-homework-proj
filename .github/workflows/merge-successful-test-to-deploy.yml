@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: "INBPM0420L/homework-project-deliciouslytyped"
+          repository: "deliciouslytyped/szofsd-homework-proj"
 
       - name: Config git
         run: |
