@@ -46,6 +46,15 @@ public abstract class StageController {
     stageHack.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
       if (oldScene == null && newScene != null) {
         log.trace("New scene initialized.");
+
+        // Make a quit key availible in every scene
+        newScene.setOnKeyPressed(k -> {
+          log.trace("key pressed: {}", k);
+          switch (k.getCode()) {
+            case Q -> { System.exit(0); }
+          };
+        });
+
         newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
           if (oldWindow == null && newWindow != null) {
             log.trace("New window initialized.");
