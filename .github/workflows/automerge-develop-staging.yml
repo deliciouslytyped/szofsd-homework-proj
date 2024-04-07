@@ -31,7 +31,7 @@ jobs:
           git fetch --unshallow
           git checkout 2_staging
           git pull
-          git merge 1_develop \
+          git merge master \
            -m "Merge develop to staging" \
            --no-ff
 
