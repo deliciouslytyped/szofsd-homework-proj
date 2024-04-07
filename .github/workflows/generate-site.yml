@@ -1,0 +1,77 @@
+name: Generate Website
+on:
+  push:
+    branches: [ "3_deploy" ]
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  generate-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: "deliciouslytyped/szofsd-homework-proj"
+          ref: "3_deploy"
+          path: "repo"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 20
+          distribution: "temurin"
+          cache: "maven"
+
+      - name: Maven stuff
+        run: |
+          pushd repo
+          ./mvnw package
+          ./mvnw package -Djava17
+          # TODO any significance of whether this uses -Djava17?
+          ./mvnw site:site
+
+      - name: Generate screenshots
+        run: |
+          pushd repo
+          #xvfb-run -s "-screen 0 800x600x24" bash -O extglob -c "java -jar java20/!(original-*).jar & { sleep 3; import -window root $(pwd)/main_screen1.png; }; sleep 7;"
+          Xvfb :5 -screen 0 800x600x24 & bash -O extglob -c 'export DISPLAY=:5; set -x ; java -Dprism.verbose=true -jar java20/!(original-*).jar & { sleep 7; import -screen -window root $(pwd)/main_screen1.png; }; kill -9 %1;';
+
+      - uses: actions/checkout@v3
+        with:
+          repository: "deliciouslytyped/szof-pg"
+          path: "pages"
+          token: ${{ secrets.PAGES_PUSH_TOKEN }}
+
+      - name: Config git
+        run: |
+          pushd pages
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+      - name: Auth
+        run: |
+          pushd pages
+          git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_REPOSITORY_OWNER}"; echo "password=${GITHUB_TOKEN}"; }; f'
+
+      - name: generate pages and push
+        run: |
+          pushd pages
+          mkdir -p img
+          # add static content
+          cp -r ../repo/site/* .
+          cp -r ../repo/java20/site .
+          # add screenshots
+          cp ../repo/main_screen1.png img/
+          # NOTE there doesn't seem to be a way to make artifacts from a private repo
+          # action run accessible publicly without organization access (otherwise nightly.sh could work)
+          # So we have to be satisfied with spamming continuous releases..
+          mv ../repo/java20/kyuubey-*.jar /tmp/kyuubey-java20.jar
+          mv ../repo/java17/kyuubey-*.jar /tmp/kyuubey-java17.jar
+          url=$(GITHUB_TOKEN=${{ secrets.PAGES_PUSH_TOKEN }} hub release create -m "Automatic release." $(printf ' -a %s ' /tmp/kyuubey-*.jar) "contdeliv-$(date +%F-%H-%M-%S)" | grep http)
+          url=${url/\/tag\//\/download\/}
+          # TODO yeah yeah better normal static site generator
+          sed -i "s|__latest_20_jar_url__|$url/kyuubey-java20.jar|" index.html
+          sed -i "s|__latest_17_jar_url__|$url/kyuubey-java17.jar|" index.html
+          git add -A
+          git commit -m "Update site"
+          git push
