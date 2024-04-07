@@ -1,6 +1,7 @@
 // https://stackoverflow.com/questions/49130485/javafx-shape3d-texturing-dont-strectch-the-image
 package game.ui;
 
+import lombok.extern.slf4j.Slf4j;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.canvas.Canvas;
@@ -8,14 +9,19 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.shape.VertexFormat;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
+import game.model.CubeFace;
+
+@Slf4j
 public class TexturedCube extends MeshView {
   float[] points;
   float[] tex;
   float[] normals;
   int[] faces;
 
-  int activeSide;
+  public ObjectProperty<Integer> activeSide;
   TexturedCube(float size, int side){
   super();
 
@@ -29,11 +35,15 @@ public class TexturedCube extends MeshView {
   mesh.getFaces().addAll(faces);
 
   setMesh(mesh);
-  setSide(side);
+  activeSide = new SimpleObjectProperty<Integer>();
+  activeSide.addListener((observable, oldVal, newVal) -> {
+    setTexture(newVal);
+  });
+  activeSide.setValue(CubeFace.TOP);
   }
 
-  void setSide(int side){
-    activeSide = side;
+  private void setTexture(int side){
+    log.trace("setting texture active side to {}", side);
     var ph = new PhongMaterial();
     Canvas canvas = new Canvas(4*32,3*32); // the interpolation leads to soft edges. not sure how to turn it off.
     var gc = canvas.getGraphicsContext2D();
@@ -42,15 +52,15 @@ public class TexturedCube extends MeshView {
     gc.fillRect(0,0,16*32,12*32);
     gc.setFill(Color.RED);
     switch (side){
-      case 1 -> { gc.fillRect(1*32,0*32,1*32,1*32); } // "top"
-      case 6 -> { gc.fillRect(1*32,1*32,1*32,1*32); } // "front"
-      case 3 -> { gc.fillRect(1*32,2*32,1*32,1*32); } // "bottom"
-      case 5 -> { gc.fillRect(0*32,1*32,1*32,1*32); } // right
-      case 4 -> { gc.fillRect(2*32,1*32,1*32,1*32); } // left
-      case 2 -> { gc.fillRect(3*32,1*32,1*32,1*32); } // back
+      case CubeFace.TOP -> { gc.fillRect(1*32,0*32,1*32,1*32); } // "top"
+      case CubeFace.FRONT -> { gc.fillRect(1*32,1*32,1*32,1*32); } // "front"
+      case CubeFace.BOTTOM -> { gc.fillRect(1*32,2*32,1*32,1*32); } // "bottom"
+      case CubeFace.RIGHT -> { gc.fillRect(0*32,1*32,1*32,1*32); } // right
+      case CubeFace.LEFT -> { gc.fillRect(2*32,1*32,1*32,1*32); } // left
+      case CubeFace.BACK -> { gc.fillRect(3*32,1*32,1*32,1*32); } // back
     }
     if (side == 3){
-      System.out.println("Warning: bottom active.");
+      log.error("bottom active.");
     }
     ph.setDiffuseMap(canvas.snapshot(null,null));
     setMaterial(ph);

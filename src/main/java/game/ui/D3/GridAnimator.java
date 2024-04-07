@@ -34,6 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.Runnable;
+
+import game.model.RollingCube;
 
 // TODO this is currently tightly coupled
 @Slf4j
@@ -46,7 +49,7 @@ public class GridAnimator implements IGridAnimator {
     GridAnimator(Player n) {
       this.n = n.cube;
       this.parent = (Group)n.getParent();
-      parent.getChildren().add(new Marker());
+      parent.getChildren().add(new Marker(Color.PURPLE));
     }
 
     Timeline tweener(DoubleProperty prop, double offset){
@@ -79,85 +82,49 @@ public class GridAnimator implements IGridAnimator {
 
     }
     @Override
-    public void animateUp() {
-      log.trace("animateUp");
+    public void animateRight(Runnable finished) {
+      log.trace("animateRight");
       var p = n.parentToLocal(0, 50, 50);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.X_AXIS);
       tryAnim(r, true, () -> {
         parent.setTranslateZ(parent.getTranslateZ() + 100);
-        var newside = switch (n.activeSide){
-          case 1 -> 2;
-          case 2 -> 3;
-          case 3 -> 6;
-          case 4 -> 4;
-          case 5 -> 5;
-          case 6 -> 1;
-          default -> throw new IllegalStateException("Unexpected value: " + n.activeSide);
-        };
-        n.setSide(newside); // need to do it so everything is always relatiev to side on top, facing front, orientation
+        finished.run();
       });
     }
 
     @Override
-    public void animateDown() {
-      log.trace("animateDown");
+    public void animateLeft(Runnable finished) {
+      log.trace("animateLeft");
       var p = n.parentToLocal(0, 50, -50);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.X_AXIS);
       tryAnim(r, false, () ->{
         parent.setTranslateZ(parent.getTranslateZ() - 100);
         n.getTransforms().clear();
-        var newside = switch (n.activeSide){
-          case 2 -> 1; // note these are the reverse of the above
-          case 3 -> 2;
-          case 6 -> 3;
-          case 4 -> 4;
-          case 5 -> 5;
-          case 1 -> 6;
-          default -> throw new IllegalStateException("Unexpected value: " + n.activeSide);
-        };
-        n.setSide(newside); // need to do it so everything is always relatiev to side on top, facing front, orientation
+        finished.run();
       });
     }
 
     @Override
-    public void animateLeft() {
-      log.trace("animateLeft");
+    public void animateUp(Runnable finished) {
+      log.trace("animateUp");
       var p = n.parentToLocal(-50, 50, 0);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.Z_AXIS);
       tryAnim(r, true, () -> {
         parent.setTranslateX(parent.getTranslateX() - 100);
         n.getTransforms().clear();
-        var newside = switch (n.activeSide){
-          case 1 -> 5;
-          case 5 -> 3;
-          case 3 -> 4;
-          case 4 -> 1;
-          case 2 -> 2;
-          case 6 -> 6;
-          default -> throw new IllegalStateException("Unexpected value: " + n.activeSide);
-        };
-        n.setSide(newside); // need to do it so everything is always relatiev to side on top, facing front, orientation
+        finished.run();
       });
     }
 
     @Override
-    public void animateRight() {
-      log.trace("animateRight");
+    public void animateDown(Runnable finished) {
+      log.trace("animateDown");
       var p = n.parentToLocal(50, 50, 0);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.Z_AXIS);
       tryAnim(r, false, () -> {
         parent.setTranslateX(parent.getTranslateX() + 100);
         n.getTransforms().clear();
-        var newside = switch (n.activeSide){
-          case 5 -> 1;
-          case 3 -> 5;
-          case 4 -> 3;
-          case 1 -> 4;
-          case 2 -> 2;
-          case 6 -> 6;
-          default -> throw new IllegalStateException("Unexpected value: " + n.activeSide);
-        };
-        n.setSide(newside); // need to do it so everything is always relatiev to side on top, facing front, orientation
+        finished.run();
       });
 
     }

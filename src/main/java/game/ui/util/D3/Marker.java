@@ -10,4 +10,9 @@ public class Marker extends Box {
     super(30, 30, 30);
     setMaterial(new PhongMaterial(Color.YELLOW));
   }
+
+  Marker(Color c){
+    super(30, 30, 30);
+    setMaterial(new PhongMaterial(c));
+  }
 }

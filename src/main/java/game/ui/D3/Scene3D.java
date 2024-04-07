@@ -33,6 +33,8 @@ import org.w3c.dom.Text;
 
 import lombok.AllArgsConstructor;
 
+import game.model.Map;
+
 public class Scene3D {
   @AllArgsConstructor
   public static class SceneSet {
@@ -71,15 +73,15 @@ public class Scene3D {
   }
 
   //TODO factor and bind this to the model
-  public static MapSet prepareMap(int[][] map){
+  public static MapSet prepareMap(Map map){
     Group world2 = new Group();
     Group world = new Group();
     world2.getChildren().add(world);
     Group obstacles = new Group();
 
-    for(int i = 0; i < map.length; i++){
-      for(int j = 0; j < map.length; j++) {
-        if (map[i][j] == 1) {
+    for(int i = 0; i < map.width(); i++){
+      for(int j = 0; j < map.width(); j++) {
+        if (map.get(i,j) == 1) {
           Box b = new Box(100, 100, 100);
           var p = new PhongMaterial(Color.GRAY);
           b.setMaterial(p);
@@ -97,20 +99,15 @@ public class Scene3D {
       obstacles.getChildren().add(b);
     }*/
 
-    int startx = 1;
-    int starty = 5;
-
     Player player = new Player();
     var outerPlayer = new Group(player);
-    outerPlayer.setTranslateX(startx*100);
-    outerPlayer.setTranslateZ(starty*100);
     obstacles.getChildren().add(outerPlayer);
 
     obstacles.setTranslateX(100/2);
     obstacles.setTranslateZ(100/2);
     obstacles.setTranslateY(-100/2);
 
-    Box ground = new Box(100*map.length, 10,100*map.length);
+    Box ground = new Box(100*map.width(), 10,100*map.width());
     ground.setTranslateX(ground.getWidth()/2);
     ground.setTranslateZ(ground.getDepth()/2);
     ground.setTranslateY(ground.getHeight()/2);
@@ -127,7 +124,7 @@ public class Scene3D {
     Rotate a = new Rotate(45, Rotate.X_AXIS);
     Rotate b = new Rotate(45, Rotate.Y_AXIS);
     world2.getTransforms().addAll(a, b);
-    world2.getChildren().add(new Marker());
+    world2.getChildren().add(new Marker(Color.ORANGE));
     return new MapSet(player, world2);
   }
 

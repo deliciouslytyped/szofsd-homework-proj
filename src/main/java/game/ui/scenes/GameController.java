@@ -7,11 +7,15 @@ import javafx.scene.SubScene;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import game.GameModel;
+import game.model.GameModel;
+import game.model.Map;
+import game.model.Direction;
+import game.model.Position;
 
 //TODO ok how does this even work, isnt log supposed to be inherited?
 @Slf4j
@@ -50,15 +54,71 @@ public class GameController extends StageController {
        mapRoot = newMapRoot;
        sceneRoot.getChildren().add(newMapRoot);
 
+       //TODO I don't know how to reset the property properly otherwise, the change event doesnt get fired if it doesnt actually change
+       newModel.initPlayerPosition(null);
+       newModel.playerProperty().getValue().reset();
+       // TODO instead of this, somehow fire events for the directions passed to move
+       newModel.positionProperty().addListener((observable3, oldPos, newPos) -> {
+         if (newPos == null) { return; };
+         if (oldPos == null){
+           //TODO this player parent thing is confusing, i already messed myself up
+           player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
+           player.getParent().setTranslateZ(newPos.col()*100);
+         } else {
+           //TODO technically not necessary to re-set the positions here but its a sanity check
+           // set the side in the texture after animation finishes, probably move this to gridanimator
+           switch (Direction.of(newPos.row()-oldPos.row(), newPos.col()-oldPos.col())) {
+             case UP -> {
+               ga.animateUp(() -> {
+                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
+                 log.trace("set texture to {}", v);
+                 player.cube.activeSide.setValue(v);
+                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
+                 player.getParent().setTranslateZ(newPos.col()*100);
+               });
+             } // NOTE the new face textuer needs to be set after animation is finished
+             case DOWN -> {
+               ga.animateDown(() -> {
+                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
+                 log.trace("set texture to {}", v);
+                 player.cube.activeSide.setValue(v);
+                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
+                 player.getParent().setTranslateZ(newPos.col()*100);
+               });
+             } // NOTE the new face textuer needs to be set after animation is finished
+             case LEFT -> {
+               ga.animateLeft(() -> {
+                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
+                 log.trace("set texture to {}", v);
+                 player.cube.activeSide.setValue(v);
+                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
+                 player.getParent().setTranslateZ(newPos.col()*100);
+               });
+             } // NOTE the new face textuer needs to be set after animation is finished
+             case RIGHT -> {
+               ga.animateRight(() -> {
+                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
+                 log.trace("set texture to {}", v);
+                 player.cube.activeSide.setValue(v);
+                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
+                 player.getParent().setTranslateZ(newPos.col()*100);
+               });
+             } // NOTE the new face textuer needs to be set after animation is finished
+           };
+         }
+       });
+
        // TODO Pass by value semantics means we have to redo these.
        // What about deleting the old objects still hanging around?
+
+       newModel.initPlayerPosition(new Position(1,5));
 
        log.trace("bound animator to player.");
        ga = new GridAnimator(player);
 
        log.trace("Set up player interactivity bindings.");
        // TODO this is a hack until i fix the multiple event handlers issue
-       bindPlayer(ga);
+       bindPlayer(ga, newModel);
        /*
        bindPlayer(ga);
        bindWorld(sceneRoot);
@@ -84,7 +144,7 @@ public class GameController extends StageController {
     model.setValue(gm);
     gm.setMap();
 
-    sceneRoot.getChildren().add(new Marker());
+    sceneRoot.getChildren().add(new Marker(Color.GREEN));
 
     ////TODO the camera is off center for some reason
     //TODO need to use thi if perspective camera
@@ -101,14 +161,14 @@ public class GameController extends StageController {
   // TODO make sure this is done properly
   // TODO not sure if there is a way to do this without passing the argument,
   //   the lambda capturing object refernce by value is necessitating this
-  private void bindPlayer(IGridAnimator ga){
+  private void bindPlayer(IGridAnimator ga, GameModel model){
     renderArea.setOnKeyPressed(k -> {
       log.trace("bindplayer key pressed: {}", k);
       switch (k.getCode()) {
-        case D -> { ga.animateUp(); } // TODO had to relabel these
-        case A -> { ga.animateDown(); }
-        case W -> { ga.animateLeft(); }
-        case S -> { ga.animateRight(); }
+        case W -> { model.tryMove(Direction.UP); } // TODO had to relabel these
+        case S -> { model.tryMove(Direction.DOWN); }
+        case A -> { model.tryMove(Direction.LEFT); }
+        case D -> { model.tryMove(Direction.RIGHT); }
 
         // TODO event handler hacks
         case LEFT -> { camera.setTranslateX(camera.translateXProperty().add(10).getValue()); }
@@ -118,7 +178,7 @@ public class GameController extends StageController {
         case NUMPAD8 -> { camera.setTranslateZ(camera.getTranslateZ() + 10); }
         case NUMPAD2 -> { camera.setTranslateZ(camera.getTranslateZ() - 10); }
         case Q -> { System.exit(0); }
-        case R -> { model.getValue().debugFireMap(); } // Trigger world reinit
+        case R -> { model.debugFireMap(); } // Trigger world reinit
       };
     });
   }
