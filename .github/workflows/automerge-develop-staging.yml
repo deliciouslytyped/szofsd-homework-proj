@@ -6,8 +6,7 @@ name: Automerge develop to staging
 
 on:
   push:
-#    branches: [ "1_develop" ]
-    branches: [ "master" ]
+    branches: [ "1_develop" ]
 
 jobs:
   merge-to-staging:
@@ -18,6 +17,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: "deliciouslytyped/szofsd-homework-proj"
+          ref: "1_develop"
 
       - name: Config git
         run: |
