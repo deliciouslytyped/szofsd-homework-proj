@@ -35,8 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.Runnable;
+import java.util.function.Consumer;
 
 import game.model.RollingCube;
+import game.model.Position;
 
 // TODO this is currently tightly coupled
 @Slf4j
@@ -60,7 +62,7 @@ public class GridAnimator implements IGridAnimator {
       return t;
     }
 
-    void tryAnim(Rotate r, boolean negative, Runnable callback){
+    void tryAnim(Rotate r, boolean negative, Consumer<Position> callback, Position data){
       if (inProgress) return;
       else inProgress = true;
       var prop = r.angleProperty();
@@ -75,57 +77,58 @@ public class GridAnimator implements IGridAnimator {
         n.setRotate(0);
         n.setRotationAxis(Rotate.Z_AXIS);
         n.setRotate(0);
-        callback.run();
+        callback.accept(data);
         inProgress = false;
       });
       tw.play();
 
     }
-    @Override
-    public void animateRight(Runnable finished) {
+
+//    @Override
+    public void animateRight(Consumer<Position> finished, Position newPos) {
       log.trace("animateRight");
       var p = n.parentToLocal(0, 50, 50);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.X_AXIS);
-      tryAnim(r, true, () -> {
+      tryAnim(r, true, (_newPos) -> {
         parent.setTranslateZ(parent.getTranslateZ() + 100);
-        finished.run();
-      });
+        finished.accept(_newPos);
+      }, newPos);
     }
 
-    @Override
-    public void animateLeft(Runnable finished) {
+//    @Override
+    public void animateLeft(Consumer<Position> finished, Position newPos) {
       log.trace("animateLeft");
       var p = n.parentToLocal(0, 50, -50);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.X_AXIS);
-      tryAnim(r, false, () ->{
+      tryAnim(r, false, (_newPos) ->{
         parent.setTranslateZ(parent.getTranslateZ() - 100);
         n.getTransforms().clear();
-        finished.run();
-      });
+        finished.accept(_newPos);
+      }, newPos);
     }
 
-    @Override
-    public void animateUp(Runnable finished) {
+//    @Override
+    public void animateUp(Consumer<Position> finished, Position newPos) {
       log.trace("animateUp");
       var p = n.parentToLocal(-50, 50, 0);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.Z_AXIS);
-      tryAnim(r, true, () -> {
+      tryAnim(r, true, (_newPos) -> {
         parent.setTranslateX(parent.getTranslateX() - 100);
         n.getTransforms().clear();
-        finished.run();
-      });
+        finished.accept(_newPos);
+      }, newPos);
     }
 
-    @Override
-    public void animateDown(Runnable finished) {
+//    @Override
+    public void animateDown(Consumer<Position> finished, Position newPos) {
       log.trace("animateDown");
       var p = n.parentToLocal(50, 50, 0);
       Rotate r = new Rotate(0, p.getX(), p.getY(), p.getZ(), Rotate.Z_AXIS);
-      tryAnim(r, false, () -> {
+      tryAnim(r, false, (_newPos) -> {
         parent.setTranslateX(parent.getTranslateX() + 100);
         n.getTransforms().clear();
-        finished.run();
-      });
+        finished.accept(_newPos);
+      }, newPos);
 
     }
   }

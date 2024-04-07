@@ -17,6 +17,9 @@ import game.model.Map;
 import game.model.Direction;
 import game.model.Position;
 
+import java.util.function.Consumer;
+
+
 //TODO ok how does this even work, isnt log supposed to be inherited?
 @Slf4j
 public class GameController extends StageController {
@@ -58,52 +61,29 @@ public class GameController extends StageController {
        newModel.initPlayerPosition(null);
        newModel.playerProperty().getValue().reset();
        // TODO instead of this, somehow fire events for the directions passed to move
+
+       Consumer<Position> afterAnimation = (newPos) -> {
+         var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
+         log.trace("set texture to {}", v);
+         player.cube.activeSide.setValue(v);
+         //TODO this is redundant but good for sanity check?
+         player.setPosition(newPos);
+       };
+
        newModel.positionProperty().addListener((observable3, oldPos, newPos) -> {
          if (newPos == null) { return; };
          if (oldPos == null){
            //TODO this player parent thing is confusing, i already messed myself up
-           player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
-           player.getParent().setTranslateZ(newPos.col()*100);
+           player.setPosition(newPos);
          } else {
            //TODO technically not necessary to re-set the positions here but its a sanity check
            // set the side in the texture after animation finishes, probably move this to gridanimator
+           //TODO having to pass the arg in stupid like this sucks
            switch (Direction.of(newPos.row()-oldPos.row(), newPos.col()-oldPos.col())) {
-             case UP -> {
-               ga.animateUp(() -> {
-                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
-                 log.trace("set texture to {}", v);
-                 player.cube.activeSide.setValue(v);
-                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
-                 player.getParent().setTranslateZ(newPos.col()*100);
-               });
-             } // NOTE the new face textuer needs to be set after animation is finished
-             case DOWN -> {
-               ga.animateDown(() -> {
-                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
-                 log.trace("set texture to {}", v);
-                 player.cube.activeSide.setValue(v);
-                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
-                 player.getParent().setTranslateZ(newPos.col()*100);
-               });
-             } // NOTE the new face textuer needs to be set after animation is finished
-             case LEFT -> {
-               ga.animateLeft(() -> {
-                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
-                 log.trace("set texture to {}", v);
-                 player.cube.activeSide.setValue(v);
-                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
-                 player.getParent().setTranslateZ(newPos.col()*100);
-               });
-             } // NOTE the new face textuer needs to be set after animation is finished
-             case RIGHT -> {
-               ga.animateRight(() -> {
-                 var v = newModel.playerProperty().getValue().activeFaceProperty().getValue();
-                 log.trace("set texture to {}", v);
-                 player.cube.activeSide.setValue(v);
-                 player.getParent().setTranslateX(newPos.row()*100); //TODO bind something instead?
-                 player.getParent().setTranslateZ(newPos.col()*100);
-               });
-             } // NOTE the new face textuer needs to be set after animation is finished
+             case UP -> { ga.animateUp(afterAnimation, newPos); } // NOTE the new face textuer needs to be set after animation is finished
+             case DOWN -> { ga.animateDown(afterAnimation, newPos); } // NOTE the new face textuer needs to be set after animation is finished
+             case LEFT -> { ga.animateLeft(afterAnimation, newPos); } // NOTE the new face textuer needs to be set after animation is finished
+             case RIGHT -> { ga.animateRight(afterAnimation, newPos); } // NOTE the new face textuer needs to be set after animation is finished
            };
          }
        });

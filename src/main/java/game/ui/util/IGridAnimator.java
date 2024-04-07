@@ -1,10 +1,13 @@
 package game.ui;
 
-import java.lang.Runnable;
+import java.util.function.Consumer;
 
+import game.model.Position;
+
+//TODO generics result in foot shooting, not enough time to figure it out
 public interface IGridAnimator {
-  void animateUp(Runnable finished);
-  void animateDown(Runnable finished);
-  void animateLeft(Runnable finished);
-  void animateRight(Runnable finished);
+  void animateUp(Consumer<Position> finished, Position d);
+  void animateDown(Consumer<Position> finished, Position d);
+  void animateLeft(Consumer<Position> finished, Position d);
+  void animateRight(Consumer<Position> finished, Position d);
 }
