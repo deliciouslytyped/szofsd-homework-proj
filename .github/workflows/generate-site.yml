@@ -27,7 +27,7 @@ jobs:
       - name: Generate screenshots
         run: |
           pushd repo
-          xvfb-run -s "-screen 0 800x600x24" bash -c "java -jar target/game-1.0-SNAPSHOT.jar & { sleep 3; import -window root $(pwd)/main_screen1.png; }"
+          xvfb-run -s "-screen 0 800x600x24" bash -c "shopt extglob; java -jar target/!(original-*).jar & { sleep 3; import -window root $(pwd)/main_screen1.png; }"
 
       - uses: actions/checkout@v3
         with:
