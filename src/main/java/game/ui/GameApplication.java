@@ -5,15 +5,18 @@ import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Objects;
 
+import game.ui.SceneStateMachine;
+
 @Slf4j
 public class GameApplication extends Application {
+
+  private SceneStateMachine ssm;
 
   // TODO: Why is this marked NonNull in the examples?
   // Are there situations where this can be null? Does anything other than JavaFX call start?
@@ -32,13 +35,11 @@ public class GameApplication extends Application {
       return;
       }
 
-    stage.setTitle("JavaFX Game Demo");
-    // TODO: error codes using resource bundles?
-    // TODO: any good way to DRY this?
-    var scene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/startscreen.fxml"), "Failed to find resource `/fxml/startscreen.fxml`.")));
-    stage.setScene(scene);
-    log.info("Loaded StartScreen scene.");
+    ssm = new SceneStateMachine(stage);
+    stage.setUserData(UIState.builder()
+            .ssm(ssm)
+            .build());
 
-    stage.show();
+    ssm.startScreen();
   }
 }
