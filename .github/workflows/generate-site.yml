@@ -21,8 +21,8 @@ jobs:
       - name: Maven stuff
         run: |
           pushd repo
-          #mvn package
-          mvn site:site
+          ./mvnw package
+          ./mvnw site:site
 
       - name: Generate screenshots
         run: |

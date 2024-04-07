@@ -43,8 +43,8 @@ jobs:
 
       - name: Maven test
         run: |
-          mvn test
-          #mvn package
+          ./mvnw test
+          ./mvnw package
 
       - name: Save artefacts
         uses: actions/upload-artifact@v3

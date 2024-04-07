@@ -37,6 +37,21 @@ https://www.google.com/search?q="javafx%3Arun"+properties
 https://stackoverflow.com/questions/417152/how-do-i-set-javas-min-and-max-heap-size-through-environment-variables
 https://www.google.com/search?q=configuration+systemproperties
 
+### `no main manifest attribute`
+```
+$ java -jar target/original-kyuubey-swf-exe-jar-0.1.jar
+no main manifest attribute, in target/original-kyuubey-swf-exe-jar-0.1.jar
+```
+
+Can be caused by running the wrong (non-uber) jar. 
+
+```
+$ DISPLAY=localhost:10.0 java -jar target/kyuubey-swf-exe-jar-0.1.jar
+May 28, 2023 11:25:32 PM com.sun.javafx.application.PlatformImpl startup
+WARNING: Unsupported JavaFX configuration: classes were loaded from 'unnamed module @4703afb6'
+```
+
+
 ### It's kind of difficult to embed SVG in GitHub Markdown 
 Apparently it supposed to work now but the only thing I actually got to work was like:
 
