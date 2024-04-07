@@ -34,6 +34,8 @@ These must be configured as the following secrets:
 # TODO / Plan
 
 ## base
+- [x] basic java build works
+- [] basic JavaFX build works
 - [] JavaFX MVC GUI
 - [] feladat modell
 - [] tesztelhető / tesztek a modellhez
